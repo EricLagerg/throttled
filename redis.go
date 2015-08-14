@@ -1,10 +1,9 @@
-package store
+package throttled
 
 import (
 	"time"
 
 	"github.com/garyburd/redigo/redis"
-	"github.com/throttled/throttled"
 )
 
 // redisStore implements a Redis-based store.
@@ -18,7 +17,7 @@ type redisStore struct {
 // connections. The keys will have the specified keyPrefix, which may be an empty string,
 // and the database index specified by db will be selected to store the keys.
 //
-func NewRedisStore(pool *redis.Pool, keyPrefix string, db int) throttled.Store {
+func NewRedisStore(pool *redis.Pool, keyPrefix string, db int) Store {
 	return &redisStore{
 		pool:   pool,
 		prefix: keyPrefix,

@@ -1,11 +1,10 @@
-package store
+package throttled
 
 import (
 	"sync"
 	"time"
 
 	"github.com/golang/groupcache/lru"
-	"github.com/throttled/throttled"
 )
 
 // memStore implements an in-memory Store.
@@ -28,7 +27,7 @@ type memStore struct {
 // among multiple instances of the web server, use a database- or key-value-based
 // store.
 //
-func NewMemStore(maxKeys int) throttled.Store {
+func NewMemStore(maxKeys int) Store {
 	var m *memStore
 	if maxKeys > 0 {
 		m = &memStore{
@@ -71,7 +70,7 @@ func (ms *memStore) Incr(key string, window time.Duration) (int, int, error) {
 	} else {
 		ms.m[key] = c
 	}
-	return c.n, throttled.RemainingSeconds(c.ts, window), nil
+	return c.n, RemainingSeconds(c.ts, window), nil
 }
 
 // Reset resets the counter for the specified key. It sets the count
